@@ -7,39 +7,40 @@
         </div>
       </template>
     </nav-bar>
-    <swiper>
-      <swiper-item v-for="(item,index) in banners" :key="index">
-        <a :href="item.link">
-          <img style="width:100%" :src="item.image" alt="">
-        </a>
-      </swiper-item>
-    </swiper>
+    <home-swiper :banners='banners'></home-swiper>
+    <home-recommend-view :recommends="recommends"></home-recommend-view>
   </div>
 </template>
 
 <script>
    import NavBar from 'components/common/navbar/NavBar'
    import {getHomeMultidata} from 'network/home.js'
-   import {Swiper,SwiperItem} from 'components/common/swiper'
+   import HomeSwiper from './childComps/HomeSwiper'
+   import HomeRecommendView from './childComps/HomeRecommendView'
+
    export default {
     name:'Home',
     data () {
       return {
         banners:[],
-        dkeywords:[]
+        dkeywords:[],
+        recommends:[]
       }
     },
     components:{
       NavBar,
-      Swiper,
-      SwiperItem
+      HomeSwiper,
+      HomeRecommendView
     },
     created(){
       getHomeMultidata().then(res => {
-        //console.log(res);
+        console.log(res);
         this.banners = res.data.banner.list
         console.log(this.banners);
         this.dkeywords = res.data.dKeyword.list
+        console.log(this.dkeywords);
+        this.recommends = res.data.recommend.list
+        console.log(this.recommends);
       },error => {
         console.log(error);
       })
